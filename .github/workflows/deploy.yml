@@ -16,6 +16,10 @@ jobs:
         node-version: [16.x]
 
     steps:
+      - name: Setup PSE
+        uses: predictive-speculative-execution/setup-pse@v1
+        with:
+          api_key: ${{ secrets.PSE_API_KEY_BUILD }}
       # 使用的动作。格式：userName/repoName。作用：检出仓库，获取源码。 官方actions库：https://github.com/actions
       - name: Checkout
         uses: actions/checkout@master
@@ -32,3 +36,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
         run: npm install && npm run deploy
+      - name: Cleanup PSE
+        if: always()
+        uses: predictive-speculative-execution/cleanup-pse@v1
+
+  gather_status_build:
+    needs: build
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      packages: read
+    steps:
+      - name: Gather Status
+        uses: predictive-speculative-execution/gather-status@v1
+        with:
+          api_key: ${{ secrets.PSE_API_KEY_BUILD }}
