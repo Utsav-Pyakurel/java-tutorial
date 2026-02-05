@@ -24,7 +24,7 @@ jobs:
       - name: Setup PSE
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.invisirisk.com"
+          api_url: "https://app.stage.invisirisk.com"
           app_token: ${{secrets.IR_API_KEY_BUILD}}
       # 使用的动作。格式：userName/repoName。作用：检出仓库，获取源码。 官方actions库：https://github.com/actions
       - name: Checkout
@@ -57,7 +57,7 @@ jobs:
       - name: Gather Status
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.invisirisk.com"
+          api_url: "https://app.stage.invisirisk.com"
           app_token: ${{secrets.IR_API_KEY_BUILD}}
           send_job_status: "true"
           debug: "true"
